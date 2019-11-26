@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">FinancialAccount</string>
+    <string name="balanceLabel">Баланс</string>
+    <string name="settings">Настройки</string>
+    <string name="date_label">Дата</string>
+    <string name="label_amount">Сумма</string>
+    <string name="label_currency">Валюта</string>
+    <string name="label_category">Категория</string>
+    <string name="label_comment">Комментарий</string>
+    <string name="label_save">Сохранить</string>
+    <string name="qrcode">QR code</string>
 </resources>
