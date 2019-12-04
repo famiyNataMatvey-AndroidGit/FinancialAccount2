@@ -100,8 +100,8 @@ public class FnsApi extends AsyncTask<FnsAction, Void, JSONObject> {
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
 
             urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("Device-OS", "Adnroid 8.0");
-            urlConnection.setRequestProperty("Device-Id", "");
+            urlConnection.setRequestProperty("Device-OS", "Adnroid 6.0");
+            urlConnection.setRequestProperty("Device-Id", "androidID");
 
             String authString = this.phone + ":" + this.password;
             String basicAuth = "Basic " + Base64.encodeToString(authString.getBytes(), Base64.DEFAULT);

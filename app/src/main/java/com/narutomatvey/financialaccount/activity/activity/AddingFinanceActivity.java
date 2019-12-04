@@ -2,27 +2,25 @@ package com.narutomatvey.financialaccount.activity.activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.narutomatvey.financialaccount.R;
 
 import java.util.Calendar;
 
-public class AddingFinanceActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class AddingFinanceActivity extends Fragment implements DatePickerDialog.OnDateSetListener {
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adding_finance);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_adding_finance, container, false);
     }
 
     @Override

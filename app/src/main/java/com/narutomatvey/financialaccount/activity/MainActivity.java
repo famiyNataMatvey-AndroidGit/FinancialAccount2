@@ -1,15 +1,18 @@
 package com.narutomatvey.financialaccount.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textview.MaterialTextView;
 import com.narutomatvey.financialaccount.R;
+import com.narutomatvey.financialaccount.activity.activity.AddingFinanceActivity;
+import com.narutomatvey.financialaccount.activity.activity.HomeActivity;
 import com.narutomatvey.financialaccount.activity.helper.DBHelper;
 import com.narutomatvey.financialaccount.activity.helper.SPHelper;
 
@@ -29,53 +32,33 @@ public class MainActivity extends AppCompatActivity {
         sp = new SPHelper(this);
         sp.checkFirstLaunch();
 
-        balanceAmount = findViewById(R.id.balanceAmount);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivity()).commit();
 
-        findViewById(R.id.menu_home).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TestTag:", "1");
-            }
-        });
-
-        findViewById(R.id.menu_income).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TestTag:", "2");
-            }
-        });
-
-
-        findViewById(R.id.menu_expenses).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TestTag:", "3");
-            }
-        });
-
-        findViewById(R.id.menu_moneybox).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TestTag:", "4");
-            }
-        });
-
-        findViewById(R.id.menu_statistics).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TestTag:", "5");
-            }
-        });
     }
 
-    @Override
-    protected void onStart() {
-        if (sp.getBalanceStatus()) {
-//            balanceAmount.setText(db.getBalance());
-            sp.setBalanceFalse();
-        }
-        super.onStart();
-    }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment setectedFragment = null;
+                    switch (item.getItemId()) {
+                        case R.id.menu_home:
+                            setectedFragment = new HomeActivity();
+                            break;
+                        case R.id.menu_income:
+                        case R.id.menu_expenses:
+                        case R.id.menu_moneybox:
+                            setectedFragment = new AddingFinanceActivity();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            setectedFragment).commit();
+                    return true;
+                }
+            };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

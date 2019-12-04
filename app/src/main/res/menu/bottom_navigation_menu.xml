@@ -17,8 +17,4 @@
         android:id="@+id/menu_moneybox"
         android:icon="@drawable/ic_setting"
         android:title="@string/settings" />
-    <item
-        android:id="@+id/menu_statistics"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/settings" />
 </menu>

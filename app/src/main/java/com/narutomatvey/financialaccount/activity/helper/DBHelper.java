@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.Nullable;
+
 import com.narutomatvey.financialaccount.activity.enums.FinanceType;
+import com.narutomatvey.financialaccount.activity.models.Category;
+import com.narutomatvey.financialaccount.activity.models.Currency;
 
 public class DBHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "dbFinancialAccount";
@@ -126,4 +130,75 @@ public class DBHelper extends SQLiteOpenHelper {
         database.close();
         return total_balance;
     }
+
+    private Cursor getDataBaseMethod(String table_name, @Nullable String selection) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(table_name, null, selection, null, null, null, null);
+    }
+
+    private Currency createCurrency(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(KEY_ID);
+        int nameIndex = cursor.getColumnIndex(KEY_NAME);
+        int shortNameIndex = cursor.getColumnIndex(KEY_SHORT_NAME);
+        int coefficientIndex = cursor.getColumnIndex(KEY_COEFFICIENT);
+
+        return new Currency(cursor.getInt(idIndex),
+                cursor.getString(nameIndex),
+                cursor.getString(shortNameIndex),
+                cursor.getFloat(coefficientIndex));
+    }
+
+    public Currency getCurrency(int pk) {
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, KEY_ID + " = " + pk);
+        if (cursor.moveToFirst()) {
+            return createCurrency(cursor);
+        }
+        return null;
+    }
+
+    public Currency[] getCurrencies() {
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, null);
+        Currency[] currencies = new Currency[cursor.getCount()];
+
+        if (cursor.moveToFirst()) {
+            int index = 0;
+            do {
+                currencies[index++] = createCurrency(cursor);
+            } while (cursor.moveToNext());
+        }
+        return currencies;
+    }
+
+    private Category createCategory(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(KEY_ID);
+        int nameIndex = cursor.getColumnIndex(KEY_NAME);
+        int categoryTypeIndex = cursor.getColumnIndex(KEY_CATEGORY_TYPE);
+
+        return new Category(cursor.getInt(idIndex),
+                cursor.getString(nameIndex),
+                cursor.getInt(categoryTypeIndex));
+    }
+
+    public Category geyCategory(int pk) {
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, KEY_ID + " = " + pk);
+        if (cursor.moveToFirst()) {
+            return createCategory(cursor);
+        }
+        return null;
+    }
+
+    public Category[] getCategories() {
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, null);
+        Category[] categories = new Category[cursor.getCount()];
+
+        if (cursor.moveToFirst()) {
+            int index = 0;
+            do {
+                categories[index++] = createCategory(cursor);
+            } while (cursor.moveToNext());
+        }
+        return categories;
+    }
+
+
 }

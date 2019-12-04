@@ -10,7 +10,6 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 class PieGraph {
