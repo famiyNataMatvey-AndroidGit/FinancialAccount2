@@ -23,7 +23,7 @@ public class SPHelper {
         sharedPreferences = context.getSharedPreferences(APP_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void checkFirstLaunch() {
+    public void checkFirstLaunch(Context context) {
         if (!sharedPreferences.contains(APP_FIRST_START)) {
             editor = sharedPreferences.edit();
             editor.putBoolean(BALANCE,true);
@@ -31,6 +31,8 @@ public class SPHelper {
             editor.putBoolean(FNS_IS_REGISTRATION, false);
             editor.putLong(DEFAULT_CURRENCY, 1);
             editor.apply();
+
+            new DBHelper(context).onCreate();
         }
     }
 

@@ -7,15 +7,43 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        style="@style/Widget.Design.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_plus"
-        tools:ignore="RtlHardcoded" />
+
+    <FrameLayout
+        android:id="@+id/search_category_frame"
+        android:visibility="gone"
+        android:layout_gravity="bottom|start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_category_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="16dp"
+            android:hint="@string/label_category">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_category_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="Молоко" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/category_adding_button"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_search"
+            tools:ignore="RtlHardcoded" />
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

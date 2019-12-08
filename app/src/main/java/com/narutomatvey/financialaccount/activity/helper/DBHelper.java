@@ -39,6 +39,10 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public void onCreate() {
+        onCreate(this.getWritableDatabase());
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table " + TABLE_NAME_CURRENCY + "("
@@ -82,17 +86,13 @@ public class DBHelper extends SQLiteOpenHelper {
         };
 
         for (String incomeCategoryName : incomeCategoryNames) {
-            ContentValues contentCategoryValues = new ContentValues();
-            contentCategoryValues.put(KEY_NAME, incomeCategoryName);
-            contentCategoryValues.put(KEY_CATEGORY_TYPE, FinanceType.INCOME.ordinal());
-            database.insert(TABLE_NAME_CATEGORY, null, contentCategoryValues);
+            ContentValues cv = createCategory(incomeCategoryName, FinanceType.INCOME);
+            database.insert(TABLE_NAME_CATEGORY, null, cv);
         }
 
         for (String expenseCategoryName : expenseCategoryNames) {
-            ContentValues contentCategoryValues = new ContentValues();
-            contentCategoryValues.put(KEY_NAME, expenseCategoryName);
-            contentCategoryValues.put(KEY_CATEGORY_TYPE, FinanceType.EXPENSES.ordinal());
-            database.insert(TABLE_NAME_CATEGORY, null, contentCategoryValues);
+            ContentValues cv = createCategory(expenseCategoryName, FinanceType.EXPENSES);
+            database.insert(TABLE_NAME_CATEGORY, null, cv);
         }
 
     }
@@ -105,6 +105,13 @@ public class DBHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("drop table if exists " + TABLE_NAME_FINANCE);
             onCreate(sqLiteDatabase);
         }
+    }
+
+    private ContentValues createCategory(String name, FinanceType type) {
+        ContentValues contentCategoryValues = new ContentValues();
+        contentCategoryValues.put(KEY_NAME, name);
+        contentCategoryValues.put(KEY_CATEGORY_TYPE, type.ordinal());
+        return contentCategoryValues;
     }
 
     public float getBalance() {
@@ -176,7 +183,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return new Category(cursor.getInt(idIndex),
                 cursor.getString(nameIndex),
-                cursor.getInt(categoryTypeIndex));
+                FinanceType.values()[cursor.getInt(categoryTypeIndex)]);
     }
 
     public Category geyCategory(int pk) {
@@ -187,8 +194,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public Category[] getCategories() {
-        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, null);
+    public Category[] getCategories(FinanceType type, String categoryName) {
+        String selection = KEY_CATEGORY_TYPE + " = " + type.ordinal();
+        if (categoryName != null) {
+            selection += " AND " + KEY_NAME + " LIKE '" + categoryName + "%'";
+        }
+
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, selection);
         Category[] categories = new Category[cursor.getCount()];
 
         if (cursor.moveToFirst()) {
@@ -200,5 +212,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return categories;
     }
 
-
+    public int createCategory(Category category){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues cv = createCategory(category.getName(), category.getType());
+        return (int) database.insert(TABLE_NAME_CATEGORY, null, cv);
+    }
 }

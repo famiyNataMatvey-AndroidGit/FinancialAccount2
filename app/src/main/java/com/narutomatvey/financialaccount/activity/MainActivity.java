@@ -1,5 +1,6 @@
 package com.narutomatvey.financialaccount.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,14 +13,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textview.MaterialTextView;
 import com.narutomatvey.financialaccount.R;
 import com.narutomatvey.financialaccount.activity.activity.AddingFinanceActivity;
+import com.narutomatvey.financialaccount.activity.activity.CategoryChoiceActivity;
 import com.narutomatvey.financialaccount.activity.activity.HomeActivity;
-import com.narutomatvey.financialaccount.activity.helper.DBHelper;
 import com.narutomatvey.financialaccount.activity.helper.SPHelper;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private DBHelper db;
     private SPHelper sp;
     private MaterialTextView balanceAmount;
 
@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new DBHelper(this);
         sp = new SPHelper(this);
-        sp.checkFirstLaunch();
+        sp.checkFirstLaunch(this);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
@@ -53,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
                             setectedFragment = new AddingFinanceActivity();
                             break;
                     }
+//                    Intent intent = new Intent(MainActivity.this, CategoryChoiceActivity.class);
+//                    startActivity(intent);
+
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             setectedFragment).commit();
                     return true;
