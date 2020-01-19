@@ -2,13 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_settings"
-        android:title="@string/settings"
+        android:id="@+id/menu_setting"
         android:icon="@drawable/ic_setting"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_qrcode"
-        android:title="@string/qrcode"
         android:icon="@drawable/ic_qrcode"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/qrcode"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_statistic"
+        android:icon="@drawable/ic_statistic"
+        android:title="@string/statistic"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

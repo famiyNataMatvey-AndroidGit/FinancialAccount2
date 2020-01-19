@@ -7,8 +7,10 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:hint="@string/date_label"
         app:startIconDrawable="@drawable/ic_calendar">
 
@@ -20,54 +22,54 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="1"
-            android:hint="@string/label_amount">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/amount"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:text="152.99" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="2"
-            android:hint="@string/label_currency"
-            app:endIconDrawable="@drawable/ic_expand_list"
-            app:endIconMode="custom">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="RUB" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/category"
+        android:id="@+id/input_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/input_date_picker"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/input_currency"
+        android:hint="@string/label_amount">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="152.99" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_currency"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_date_picker"
+        android:layout_alignParentEnd="true"
+        android:hint="@string/label_currency"
+        app:endIconDrawable="@drawable/ic_expand_list"
+        app:endIconMode="custom">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="RUB" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_currency"
         android:layout_gravity="end"
         android:hint="@string/label_category"
         app:endIconDrawable="@drawable/ic_expand_list"
         app:endIconMode="custom">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:text="Молоко" />
@@ -75,6 +77,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_comment"
+        android:layout_below="@id/input_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/label_comment">
@@ -88,12 +92,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:layout_below="@id/input_comment"
         android:id="@+id/save_finance"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="100dp"
+        android:layout_alignParentEnd="true"
         android:text="@string/label_save" />
 </RelativeLayout>

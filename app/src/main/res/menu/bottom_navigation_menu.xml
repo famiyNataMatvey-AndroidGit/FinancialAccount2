@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_home"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/settings" />
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
     <item
         android:id="@+id/menu_income"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/settings" />
+        android:icon="@drawable/ic_income"
+        android:title="@string/income" />
 
     <item
         android:id="@+id/menu_expenses"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/settings" />
+        android:icon="@drawable/ic_expenses"
+        android:title="@string/expenses" />
     <item
         android:id="@+id/menu_moneybox"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/settings" />
+        android:icon="@drawable/ic_money_box"
+        android:title="@string/money_box" />
 </menu>

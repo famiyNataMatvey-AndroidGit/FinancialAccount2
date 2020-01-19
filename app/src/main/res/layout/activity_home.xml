@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
     <com.google.android.material.card.MaterialCardView
-        tools:ignore="PrivateResource"
+        android:id="@+id/mc_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
@@ -12,7 +12,7 @@
         android:layout_marginRight="@dimen/mtrl_card_spacing">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/labelBalance"
+            android:id="@+id/label_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -20,7 +20,7 @@
             android:textSize="@dimen/textBig" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/balanceAmount"
+            android:id="@+id/balance_amount"
             tools:text="555.00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,6 +29,33 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mc_income"
+        android:layout_width="match_parent"
+        android:layout_below="@id/mc_balance"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/balanceLabel"
+            android:textSize="@dimen/textBig" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/balance_income"
+            tools:text="555.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="@dimen/textBig" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcEx"
+        android:layout_below="@id/mc_income"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"

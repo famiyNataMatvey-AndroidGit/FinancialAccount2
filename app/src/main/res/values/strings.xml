@@ -9,4 +9,9 @@
     <string name="label_comment">Комментарий</string>
     <string name="label_save">Сохранить</string>
     <string name="qrcode">QR code</string>
+    <string name="income">Доходы</string>
+    <string name="expenses">Расходы</string>
+    <string name="money_box">Копилка</string>
+    <string name="home">Главная</string>
+    <string name="statistic">Статистика</string>
 </resources>
