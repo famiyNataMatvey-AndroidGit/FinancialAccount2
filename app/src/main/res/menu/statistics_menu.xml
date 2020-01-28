@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_group_period"
+        android:checkableBehavior="none"
+        android:icon="@drawable/ic_arrow_down">
+        <item
+            android:id="@+id/menu_day"
+            android:title="@string/menu_period_day" />
+        <item
+            android:id="@+id/menu_week"
+            android:title="@string/menu_period_week" />
+        <item
+            android:id="@+id/menu_month"
+            android:title="@string/menu_period_month" />
+        <item
+            android:id="@+id/menu_year"
+            android:title="@string/menu_period_year" />
+        <item
+            android:id="@+id/menu_period"
+            android:title="@string/menu_period_custom" />
+        <item
+            android:id="@+id/menu_all"
+            android:title="@string/menu_period_all" />
+    </group>
+</menu>

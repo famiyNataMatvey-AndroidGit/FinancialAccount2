@@ -3,18 +3,22 @@ package com.narutomatvey.financialaccount.activity.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.narutomatvey.financialaccount.activity.enums.DatePickerType;
+
 public class SPHelper {
     private static final String APP_PREFERENCES_NAME = "dbSettings";
 
-    private static final String APP_FIRST_START = "first_start";
-    private static final String BALANCE = "balance";
-    private static final String DEFAULT_CURRENCY = "default_currency";
+    private final String APP_FIRST_START = "first_start";
+    private final String BALANCE = "balance";
+    private final String DEFAULT_CURRENCY = "default_currency";
 
-    private static final String FNS_IS_REGISTRATION = "registration_fns";
-    private static final String FNS_PHONE = "fns_phone";
-    private static final String FNS_EMAIL = "fns_email";
-    private static final String APP_PREFERENCES_FNS_NAME = "fns_name";
-    private static final String APP_PREFERENCES_FNS_PASSWORD = "fns_password";
+    private final String DATE_PICKER_TYPE = "date_picker_type";
+
+    private final String FNS_IS_REGISTRATION = "registration_fns";
+    private final String FNS_PHONE = "fns_phone";
+    private final String FNS_EMAIL = "fns_email";
+    private final String APP_PREFERENCES_FNS_NAME = "fns_name";
+    private final String APP_PREFERENCES_FNS_PASSWORD = "fns_password";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -57,4 +61,14 @@ public class SPHelper {
     }
 
 
+    public void setDataPickerType(DatePickerType dataPickerType) {
+        editor = sharedPreferences.edit();
+        editor.putInt(DATE_PICKER_TYPE, dataPickerType.ordinal());
+        editor.apply();
+    }
+
+    public DatePickerType getDataPickerType() {
+        int ordinal = sharedPreferences.getInt(DATE_PICKER_TYPE, DatePickerType.WEEK.ordinal());
+        return DatePickerType.values()[ordinal];
+    }
 }

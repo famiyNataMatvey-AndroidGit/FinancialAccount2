@@ -11,6 +11,11 @@ import androidx.annotation.Nullable;
 import com.narutomatvey.financialaccount.activity.enums.FinanceType;
 import com.narutomatvey.financialaccount.activity.models.Category;
 import com.narutomatvey.financialaccount.activity.models.Currency;
+import com.narutomatvey.financialaccount.activity.models.Statistic;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "dbFinancialAccount";
@@ -60,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_ID + " integer primary key autoincrement,"
                 + KEY_FINANCE_TYPE + " integer not null"
                 + " check (" + KEY_FINANCE_TYPE + " >= 1 and " + KEY_FINANCE_TYPE + " <= 3),"
-                + KEY_FINANCE_DATE + " text not null,"
+                + KEY_FINANCE_DATE + " integer not null,"
                 + KEY_FINANCE_COMMENT + " text,"
                 + KEY_FINANCE_AMOUNT + " real not null" + " check (" + KEY_FINANCE_AMOUNT + " >= 0),"
                 + KEY_FINANCE_CATEGORY + " integer not null,"
@@ -138,9 +143,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return total_balance;
     }
 
-    private Cursor getDataBaseMethod(String table_name, @Nullable String selection) {
+    private Cursor getDataBaseMethod(String table_name, @Nullable String[] columns, @Nullable String selection, @Nullable String groupBy) {
         SQLiteDatabase database = this.getReadableDatabase();
-        return database.query(table_name, null, selection, null, null, null, null);
+        return database.query(table_name, columns, selection, null, groupBy, null, null);
     }
 
     private Currency createCurrency(Cursor cursor) {
@@ -156,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Currency getCurrency(int pk) {
-        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, KEY_ID + " = " + pk);
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, null, KEY_ID + " = " + pk, null);
         if (cursor.moveToFirst()) {
             return createCurrency(cursor);
         }
@@ -164,7 +169,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Currency[] getCurrencies() {
-        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, null);
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CURRENCY, null, null, null);
         Currency[] currencies = new Currency[cursor.getCount()];
 
         if (cursor.moveToFirst()) {
@@ -186,8 +191,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 FinanceType.values()[cursor.getInt(categoryTypeIndex)]);
     }
 
-    public Category geyCategory(int pk) {
-        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, KEY_ID + " = " + pk);
+    public Category getCategory(int pk) {
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, null, KEY_ID + " = " + pk, null);
         if (cursor.moveToFirst()) {
             return createCategory(cursor);
         }
@@ -200,7 +205,7 @@ public class DBHelper extends SQLiteOpenHelper {
             selection += " AND " + KEY_NAME + " LIKE '" + categoryName + "%'";
         }
 
-        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, selection);
+        Cursor cursor = getDataBaseMethod(TABLE_NAME_CATEGORY, null, selection, null);
         Category[] categories = new Category[cursor.getCount()];
 
         if (cursor.moveToFirst()) {
@@ -209,12 +214,60 @@ public class DBHelper extends SQLiteOpenHelper {
                 categories[index++] = createCategory(cursor);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return categories;
     }
 
-    public int createCategory(Category category){
+    public int createCategory(Category category) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues cv = createCategory(category.getName(), category.getType());
         return (int) database.insert(TABLE_NAME_CATEGORY, null, cv);
+    }
+
+    public List<Statistic> getStatisticsByCategory(FinanceType type, Date start, Date end) {
+        String AS_CATEGORY_NAME = "category_name";
+        String AS_FINANCE_SUM = "amount_sum";
+
+        String groupBy = TABLE_NAME_FINANCE + "." + KEY_FINANCE_CATEGORY;
+        String table = TABLE_NAME_FINANCE + " left outer join " + TABLE_NAME_CATEGORY + " on "
+                + TABLE_NAME_FINANCE + "." + KEY_FINANCE_CATEGORY + " = "
+                + TABLE_NAME_CATEGORY + "." + KEY_ID;
+        String[] columns = {
+                TABLE_NAME_CATEGORY + "." + KEY_NAME + " as " + AS_CATEGORY_NAME,
+                "sum(" + TABLE_NAME_FINANCE + "." + KEY_FINANCE_AMOUNT + ") as " + AS_FINANCE_SUM,
+                TABLE_NAME_FINANCE + "." + KEY_FINANCE_CATEGORY};
+
+        String selection = TABLE_NAME_FINANCE + "." + KEY_FINANCE_TYPE + " = " + type.ordinal();
+        if (start != null & end != null) {
+            selection += " AND ";
+            selection += TABLE_NAME_FINANCE + "." + KEY_FINANCE_DATE
+                    + " BETWEEN " + start.getTime()
+                    + " AND " + end.getTime();
+        } else if (end != null) {
+            selection += " AND ";
+            selection += TABLE_NAME_FINANCE + "." + KEY_FINANCE_DATE + " = " + end.getTime();
+        }
+
+        Cursor cursor = getDataBaseMethod(table, columns, selection, groupBy);
+
+        List<Statistic> statistics = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            int categoryIndex = cursor.getColumnIndex(KEY_FINANCE_CATEGORY);
+            int categoryNameIndex = cursor.getColumnIndex(AS_CATEGORY_NAME);
+            int sumIndex = cursor.getColumnIndex(AS_FINANCE_SUM);
+            do {
+                statistics.add(new Statistic(
+                        new Category(
+                                cursor.getInt(categoryIndex),
+                                cursor.getString(categoryNameIndex),
+                                type
+                        ),
+                        cursor.getDouble(sumIndex)
+                ));
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return statistics;
     }
 }

@@ -9,32 +9,63 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-class PieGraph {
+public class PieGraph {
 
-    GraphicalView getGraphicalView(Context context) {
+    private int size = 0;
+    private Context context;
+    private List<String> names;
+    private List<Double> amounts;
+
+    public PieGraph(Context context) {
+        this.context = context;
+    }
+
+    public GraphicalView getGraphicalView(List<String> categoryNames, List<Double> categoryAmounts) {
+        names = categoryNames;
+        amounts = categoryAmounts;
+        size = names.size();
+        return updateGraphicalView();
+    }
+
+
+    private GraphicalView updateGraphicalView() {
         CategorySeries series = new CategorySeries("");
+        DefaultRenderer defaultRenderer = generateDefaultRenderer();
+        SimpleSeriesRenderer simpleSeriesRenderer;
+        List<Integer> colors = getRandomColors();
+        for (int i = 0; i < size; i++) {
+            series.add(names.get(i), amounts.get(i));
+            simpleSeriesRenderer = new SimpleSeriesRenderer();
+            simpleSeriesRenderer.setColor(colors.get(i));
+            defaultRenderer.addSeriesRenderer(simpleSeriesRenderer);
+        }
+        return ChartFactory.getPieChartView(context, series, defaultRenderer);
+    }
+
+    private DefaultRenderer generateDefaultRenderer() {
         DefaultRenderer defaultRenderer = new DefaultRenderer();
         defaultRenderer.setZoomEnabled(false);
         defaultRenderer.setPanEnabled(false);
         defaultRenderer.setShowLegend(false);
         defaultRenderer.setLabelsTextSize(32);
         defaultRenderer.setLabelsColor(Color.BLACK);
-        SimpleSeriesRenderer simpleSeriesRenderer = null;
-        return ChartFactory.getPieChartView(context, series, defaultRenderer);
+        return defaultRenderer;
     }
 
-    private Integer[] getRandomColors(int colorNumber) {
-        Integer[] colors = new Integer[colorNumber];
+    private List<Integer> getRandomColors() {
+        List<Integer> colors = new ArrayList<Integer>();
         Integer color;
         int i = 0;
-        while (i < colorNumber) {
+        while (i < size) {
             color = getColor();
-            if (Arrays.asList(colors).contains(color))
+            if (colors.contains(color)) {
                 continue;
-            colors[i] = color;
+            }
+            colors.add(color);
             i++;
         }
         return colors;

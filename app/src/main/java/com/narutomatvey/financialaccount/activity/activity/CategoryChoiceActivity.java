@@ -3,7 +3,6 @@ package com.narutomatvey.financialaccount.activity.activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -24,16 +23,19 @@ public class CategoryChoiceActivity extends AppCompatActivity {
 
     TextInputLayout search_category_text_input;
     TextInputEditText search_category_name;
-    Category[] categories;
     DBHelper db;
+    private Category[] categories;
+    private RecyclerView recyclerView ;
+    private FinanceType financeMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_any_item_lists);
 
+        financeMode = (FinanceType) getIntent().getExtras().getSerializable("financeMode");
         db = new DBHelper(this);
-        categories = db.getCategories(FinanceType.INCOME, null);
+        categories = db.getCategories(financeMode, null);
 
         createRecyclerView(categories);
 
@@ -41,12 +43,12 @@ public class CategoryChoiceActivity extends AppCompatActivity {
         searchCategoryFrame.setVisibility(View.VISIBLE);
         search_category_text_input = findViewById(R.id.search_category_text_input);
         search_category_name = findViewById(R.id.search_category_name);
-        search_category_name.addTextChangedListener(testListener);
+        search_category_name.addTextChangedListener(categoryChangedListener);
         bindButton();
 
     }
 
-    private TextWatcher testListener =
+    private TextWatcher categoryChangedListener =
             new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -60,7 +62,6 @@ public class CategoryChoiceActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    Log.d("MY_TAG", "Hf");
                     FloatingActionButton categoryAddingButton = findViewById(R.id.category_adding_button);
                     if (editable.length() == 0) {
                         categoryAddingButton.setImageResource(R.drawable.ic_close);
@@ -69,13 +70,13 @@ public class CategoryChoiceActivity extends AppCompatActivity {
                         categoryAddingButton.setImageResource(R.drawable.ic_plus);
                         categoryAddingButton.setOnClickListener(categoryAddListener);
                     }
-                    categories = db.getCategories(FinanceType.INCOME, String.valueOf(editable));
-                    Log.d("MY_TAG", String.valueOf(categories.length));
+                    categories = db.getCategories(financeMode, String.valueOf(editable));
+                    recyclerView.setAdapter(new CategoryAdapter(categories));
                 }
             };
 
     private void createRecyclerView(Category[] categories) {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CategoryAdapter(categories));
     }
@@ -116,8 +117,8 @@ public class CategoryChoiceActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Category test_category = new Category(null, search_category_name.getText().toString(), FinanceType.INCOME);
-                    test_category.createNewCategory(db);
+                    Category new_category = new Category(null, search_category_name.getText().toString(), financeMode);
+                    new_category.createNewCategory(db);
                     finish();
                 }
             };

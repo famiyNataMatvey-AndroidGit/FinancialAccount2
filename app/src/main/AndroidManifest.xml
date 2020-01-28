@@ -23,6 +23,7 @@
         <activity android:name=".activity.activity.AddingFinanceActivity" />
         <activity android:name=".activity.activity.StatisticsActivity" />
         <activity android:name=".activity.activity.CategoryChoiceActivity" />
+        <activity android:name=".activity.activity.CurrencyChoiceActivity" />
     </application>
 
 </manifest>

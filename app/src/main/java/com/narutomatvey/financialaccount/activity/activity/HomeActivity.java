@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.narutomatvey.financialaccount.R;
+import com.narutomatvey.financialaccount.activity.MainActivity;
 
 public class HomeActivity extends Fragment {
 
@@ -19,4 +21,13 @@ public class HomeActivity extends Fragment {
         return inflater.inflate(R.layout.activity_home, container, false);
     }
 
+    @Override
+    public void onStart() {
+        MainActivity main = (MainActivity) getActivity();
+        MaterialTextView balance = main.findViewById(R.id.balance_amount);
+        MaterialTextView income= main.findViewById(R.id.balance_income);
+        balance.setText("7000");
+        income.setText("6999");
+        super.onStart();
+    }
 }

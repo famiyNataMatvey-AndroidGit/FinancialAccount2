@@ -1,7 +1,6 @@
 package com.narutomatvey.financialaccount.activity.adabter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Log.d("MY_TAG", "Element " + position + " set.");
         holder.bind(categories[position].getName());
     }
 
@@ -51,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         TextView categoryName;
 
-        public CategoryViewHolder(@NonNull View itemView) {
+        CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             categoryName = itemView.findViewById(R.id.text_frame);

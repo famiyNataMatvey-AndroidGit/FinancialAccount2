@@ -14,4 +14,13 @@
     <string name="money_box">Копилка</string>
     <string name="home">Главная</string>
     <string name="statistic">Статистика</string>
+    <string name="menu_period_day">День</string>
+    <string name="menu_period_week">Неделя</string>
+    <string name="menu_period_month">Месяц</string>
+    <string name="menu_period_year">Год</string>
+    <string name="menu_period_custom">Промежуток</string>
+    <string name="menu_period_all">Весь период</string>
+    <string name="step_forward">step forward</string>
+    <string name="step_back">step back</string>
+    <string name="data_picker">Data Picker</string>
 </resources>
